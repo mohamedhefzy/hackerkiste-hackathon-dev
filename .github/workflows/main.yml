@@ -1,0 +1,25 @@
+name: 'Stage 1 AKS Cluster'
+on: [workflow_dispatch]
+
+jobs:
+  Terraform:
+    name: 'Terraform'
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+      TF_VAR_uniquename: ${{ secrets.UNIQUE_NAME }}
+    runs-on: ubuntu-latest
+    environment: production
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./stage_1_AKS_Cluster
+    outputs:
+      aks: ${{ steps.tfout.outputs.aks }}
+      rg: ${{ steps.tfout.outputs.rg }}
+      acr_name: ${{ steps.tfout.outputs.acr_name }}
+      acr_url: ${{ steps.tfout.outputs.acr_url }}
+ 
